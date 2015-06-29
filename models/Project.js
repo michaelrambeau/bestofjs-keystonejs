@@ -23,7 +23,13 @@ Project.add({
 	repository: { type: Types.Url, required: true, initial: true },
 	createdAt: { type: Types.Date, default: Date.now },
 	updatedAt: { type: Types.Date },
-	tags: { type: Types.Relationship, ref: 'Tag', many: true }
+	tags: { type: Types.Relationship, ref: 'Tag', many: true },
+	logo: { type: Types.CloudinaryImage, folder: 'project-logos', autoCleanup : true },
+	colors: {
+	  vibrant: { type: Types.Color },
+	  muted: { type: Types.Color },
+	  darkVibrant: { type: Types.Color }
+	}
 	//snapshots: { type: Types.Relationship, ref: 'Snapshot', many: true }
 });
 

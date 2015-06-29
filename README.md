@@ -6,7 +6,14 @@ bestof.js.org backend application, built with  [KeystoneJS](http://keystonejs.co
 
 * Create models: project, tag, snapshot and superproject
 * Create batches
-* Create the API used by the front-end application
+* Create the API used by the front-end application 
+
+## API
+
+* /project/all
+* /project/:id
+* /tag/:id
+
 
 ## How to launch batches
 

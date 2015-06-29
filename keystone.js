@@ -60,6 +60,9 @@ keystone.set('nav', {
 	'superprojects': 'superprojects'	
 });
 
+// optional, will prefix each image public_id with [{prefix}]/{list.path}/{field.path}/
+keystone.set('cloudinary folders', true);
+
 // Start Keystone to connect to your database and initialise the web server
 
 keystone.start();

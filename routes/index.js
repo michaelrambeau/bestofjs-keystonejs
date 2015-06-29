@@ -54,6 +54,9 @@ exports = module.exports = function(app) {
 	//Display tag page
 	app.get('/tag/:id', routes.api.tags.single);
 	
+	//Display tag page
+	app.get('/info', routes.api.info);	
+	
 	
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
