@@ -29,7 +29,8 @@ keystone.pre('render', middleware.flashMessages);
 // Import Route Controllers
 var routes = {
 	views: importRoutes('./views'),
-	api: importRoutes('./api')
+	api: importRoutes('./api'),
+	batches: importRoutes('./batches')
 };
 
 // Setup Route Bindings
@@ -60,5 +61,8 @@ exports = module.exports = function(app) {
 	
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
+	
+	app.get('/batches/snapshots', routes.batches.snapshots.createSnapshots);
+	app.get('/batches/superprojects', routes.batches.snapshots.createSuperprojects);	
 	
 };

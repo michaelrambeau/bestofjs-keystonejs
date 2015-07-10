@@ -15,7 +15,7 @@ class ProjectBatch
       deleted: 0  
       error: 0
     
-  initKeystone: () -> 
+  initKeystone: (cb) -> 
     @Project = @keystone.list('Project').model
     @Snapshot = @keystone.list('Snapshot').model
     @SuperProject = @keystone.list('Superproject').model
@@ -23,7 +23,8 @@ class ProjectBatch
     @debug = false
 
     @init () =>
-      @startLoop()
+      @startLoop () =>
+        cb()
      
 
   initTracker: () ->
@@ -40,15 +41,16 @@ class ProjectBatch
   init: (cb) ->
     cb()
   
-  start: (options) ->
+  start: (options, cb) ->
     defaultOptions = 
       debug: false
       project: {}
     @options = _.assign defaultOptions, options
-    @initKeystone()
+    @initKeystone () =>
+      cb @stats
     
   #start the batch!    
-  startLoop: () ->
+  startLoop: (cb) ->
     t0 = new Date()
     console.log "--- start the batch ----"
     @track
@@ -66,6 +68,7 @@ class ProjectBatch
           @track
             msg: 'End'
             stats: @stats
+          cb()    
     
   
   #Method to be over-riden by child classes

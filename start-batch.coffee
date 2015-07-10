@@ -68,4 +68,5 @@ switch key
     throw new Error 'Unknown key!'
 
 #Launch the batch!
-batch.start options
+batch.start options, (stats) ->
+  console.log '/// Batch terminated normally. /// ', stats

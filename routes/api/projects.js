@@ -28,11 +28,14 @@ api.list = function (req, res) {
       });
   };
   var getTags = function (cb) {
-    Tag.model.find().exec(function(err, docs) {
-      if (err) throw err;
-      data.tags = docs;
-      cb(err, docs);
-    });
+    Tag.model
+      .find()
+      .sort({name: 1})
+      .exec(function(err, docs) {
+        if (err) throw err;
+        data.tags = docs;
+        cb(err, docs);
+      });
   };
   async.parallel([getProjects, getTags], function (cb) {
     return res.json(data);
@@ -69,6 +72,10 @@ api.single = function (req, res) {
   var getReadMe = function (project, cb) {
     github.getReadme(project, function (err, readme) {
       if (err) console.log(err);
+      console.log(readme);
+      var root = project.repository;
+      //Replace image link (see faceboox Flux readme.md)
+      readme = readme.replace(/src=\"\.\//,'src="'+ root +'/raw/master/');
       data.readme = err ? 'Unable to access README.' : readme;
       cb();      
     });

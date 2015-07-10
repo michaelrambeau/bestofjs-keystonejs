@@ -23,9 +23,9 @@ class CreateSuperProjects extends ProjectBatch
         delta1: if report.stars.length > 2 then report.stars[0] - report.stars[1] else 0
         snapshots: report.stars
         name: project.name
-        url: project.url
+        url: if project.url then project.url else ''
         repository: project.repository
-        description: project.description
+        description: if project.description then project.description else ''
         tags: _.pluck project.tags, 'id'
       console.log 'Searching', project.id  
       @SuperProject.findOne()
