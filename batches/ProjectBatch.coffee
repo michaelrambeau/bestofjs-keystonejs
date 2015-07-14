@@ -1,19 +1,23 @@
 #Base class extended by every batch
 
-#Keen = require 'keen-js'
+Keen = require 'keen-js'
 _ = require 'underscore'
 async = require 'async'
+
+github = require './github'
 
 
 class ProjectBatch
  
   constructor: (@title = 'ProjectBatch skeleton', @keystone) ->
     console.log "---- New batch #{@title} ----"
+    @initTracker()
     @stats = 
       created: 0
       updated: 0
       deleted: 0  
       error: 0
+      processed: 0
     
   initKeystone: (cb) -> 
     @Project = @keystone.list('Project').model
@@ -33,7 +37,6 @@ class ProjectBatch
       writeKey: process.env.KEEN_KEY
       
   track: (data) ->
-    return
     @keen.addEvent @title, data, (err, res) ->
       if err then console.log 'Unable to track event', err
      
@@ -74,6 +77,22 @@ class ProjectBatch
   #Method to be over-riden by child classes
   processProject: (project, cb) ->
     console.log 'Procesing', project.toString()
-    cb()
+    @getStars project, (err, data) =>
+      if data then console.log data;
+      cb()
+    
+  getStars: (project, cb) ->
+    github.getRepoData project, (err, json) =>
+      if err
+        @stats.error++
+        @track
+          msg: 'Error from Github repository'
+          repository: project.repository
+          error: err.message
+        cb err
+      else  
+        cb null,
+          stars: json.stargazers_count
+          last_pushed: json.pushed_at        
     
 module.exports = ProjectBatch    

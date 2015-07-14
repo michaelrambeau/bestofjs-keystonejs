@@ -14,8 +14,9 @@ class CreateSuperProjects extends ProjectBatch
     super('Create superProjects', keystone)
   
   processProject: (project, cb) ->
+    @stats.processed++
     @getReportData project, (report) =>
-      console.log 'report', report
+      #console.log 'report', report
       data =
         _id: project._id
         stars: report.stars[0]
@@ -27,24 +28,24 @@ class CreateSuperProjects extends ProjectBatch
         repository: project.repository
         description: if project.description then project.description else ''
         tags: _.pluck project.tags, 'id'
-      console.log 'Searching', project.id  
+      #console.log 'Searching', project.id  
       @SuperProject.findOne()
         .where
           _id: project._id
         .exec (err, doc) =>  
           if err then throw error
           if doc
-            console.log 'Updating...'
+            #console.log 'Updating...'
             @SuperProject.update doc, data, (err, result) =>
               if err then throw err
-              console.log 'Report updated.', project.toString()
+              #console.log 'Report updated.', project.toString()
               @stats.updated++
               cb err, data
           else
             console.log 'Creating superproject...', project
             @SuperProject.create data, (err, result) =>
               if err then throw err          
-              console.log 'Report created!', project.toString()
+              #console.log 'Report created!', project.toString()
               @stats.created++
               cb err, data
   

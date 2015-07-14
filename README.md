@@ -17,6 +17,8 @@ bestof.js.org backend application, built with  [KeystoneJS](http://keystonejs.co
 
 ## How to launch batches
 
+### From the command line
+
 Take Github snapshots:
 
 `coffee start-batch.coffee snapshots`
@@ -24,3 +26,9 @@ Take Github snapshots:
 Build superprojects records, used in the front-end application:
 
 `coffee start-batch.coffee superprojects`
+
+### From HTTP requests
+
+`/batches/snapshots`
+
+`/batches/superprojects`

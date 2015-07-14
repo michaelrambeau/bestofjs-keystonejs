@@ -9,7 +9,7 @@ class CreateSnapshots extends ProjectBatch
     super('Create snaphots', keystone)
   
   processProject: (project, cb) ->
-    
+    @stats.processed++
     #callback called after existing snapshot is deleted
     create = (project, cb) =>
       @createSnapshot project, cb
@@ -30,6 +30,9 @@ class CreateSnapshots extends ProjectBatch
       if err
         console.log err
         @stats.error++
+        @track
+          msg: 'Error from Github repository'
+          repository: project.repository        
         cb()
       else  
         data =
@@ -71,8 +74,11 @@ class CreateSnapshots extends ProjectBatch
       
     
   getStars: (project, cb) ->
-    github.getRepoData project, (err, json) ->
+    github.getRepoData project, (err, json) =>
       if err
+        @track
+          msg: 'Error from Github repository'
+          repository: project.repository
         cb err
       else  
         cb null,

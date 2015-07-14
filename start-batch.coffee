@@ -38,6 +38,9 @@ CreateSnapshots = require "./batches/include/CreateSnapshots"
 #Batch #2: create superprojects
 CreateSuperProjects = require "./batches/include/CreateSuperProjects"
 
+#Batch #3: Check Github repositories
+CheckGithub = require "./batches/include/CheckGithub"
+
 minimist = require 'minimist'
 argv = minimist(process.argv.slice(2))
 console.dir argv
@@ -56,14 +59,10 @@ switch key
     batch = new ProjectBatch('Test', keystone)  
   when 'snapshots'
     batch = new CreateSnapshots(keystone)
-  when 'reports'
-    batch = new CreateReports(keystone)
   when 'superprojects'
     batch = new CreateSuperProjects(keystone)
-  when 'export'
-    batch = new ExportProjects() 
-  when 'correctSnapshots'
-    batch = new SnapshotBatch()     
+  when 'checkgithub'
+    batch = new CheckGithub(keystone) 
   else
     throw new Error 'Unknown key!'
 

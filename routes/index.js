@@ -64,5 +64,6 @@ exports = module.exports = function(app) {
 	
 	app.get('/batches/snapshots', routes.batches.snapshots.createSnapshots);
 	app.get('/batches/superprojects', routes.batches.snapshots.createSuperprojects);	
+	app.get('/batches/checkgithub', routes.batches.snapshots.checkGithub);
 	
 };
