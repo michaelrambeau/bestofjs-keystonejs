@@ -68,3 +68,25 @@ exports.requireUser = function(req, res, next) {
 	}
 	
 };
+
+/**
+	Prevents people from launching batches if the right key is not present inside request headers.
+ */
+exports.batchAccessControl = function(req, res, next) {
+	var key = 'BATCH_KEY'
+	var userKey = req.headers[key.toLowerCase()] || '';
+	var configKey = process.env[key] || '';
+	if (configKey == '') {
+		res.status(400).json({error: '`' + key + '` must be set in the environment!'});
+		return false;
+	}	
+	console.log('Checking batch access... configKey=`', configKey, '`, userKey=`', userKey, '`');
+	var isAllowed = userKey === configKey;
+	if (!isAllowed) {
+		//Send an "401 Unauthorized" error if the keys do not match
+		res.status(401).json({ error: 'Not allowed to launch batches!' })
+	} else {
+		next();
+	}
+	
+};

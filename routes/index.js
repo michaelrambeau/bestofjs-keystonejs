@@ -62,8 +62,11 @@ exports = module.exports = function(app) {
 	// NOTE: To protect a route so that only admins can see it, use the requireUser middleware:
 	// app.get('/protected', middleware.requireUser, routes.views.protected);
 	
-	app.get('/batches/snapshots', routes.batches.snapshots.createSnapshots);
-	app.get('/batches/superprojects', routes.batches.snapshots.createSuperprojects);	
-	app.get('/batches/checkgithub', routes.batches.snapshots.checkGithub);
+	app.post('/batches/*', middleware.batchAccessControl);
+	
+	app.post('/batches/snapshots', routes.batches.snapshots.createSnapshots);
+	app.post('/batches/superprojects', routes.batches.snapshots.createSuperprojects);	
+	app.post('/batches/checkgithub', routes.batches.snapshots.checkGithub);
+	app.post('/batches/test', routes.batches.snapshots.simpleLoop);
 	
 };

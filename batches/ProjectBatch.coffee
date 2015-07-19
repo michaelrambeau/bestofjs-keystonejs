@@ -76,23 +76,7 @@ class ProjectBatch
   
   #Method to be over-riden by child classes
   processProject: (project, cb) ->
-    console.log 'Procesing', project.toString()
-    @getStars project, (err, data) =>
-      if data then console.log data;
-      cb()
-    
-  getStars: (project, cb) ->
-    github.getRepoData project, (err, json) =>
-      if err
-        @stats.error++
-        @track
-          msg: 'Error from Github repository'
-          repository: project.repository
-          error: err.message
-        cb err
-      else  
-        cb null,
-          stars: json.stargazers_count
-          last_pushed: json.pushed_at        
-    
+    #console.log 'Procesing', project.toString()
+    cb()
+     
 module.exports = ProjectBatch    

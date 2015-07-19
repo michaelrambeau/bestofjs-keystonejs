@@ -1,5 +1,6 @@
 var async = require('async');
 var keystone = require('keystone');
+var ProjectBatch = require("../../batches/ProjectBatch");
 var CreateSnapshots = require("../../batches/include/CreateSnapshots");
 var CreateSuperProjects = require("../../batches/include/CreateSuperProjects");
 var CheckGithub = require("../../batches/include/CheckGithub");
@@ -34,6 +35,19 @@ batches.createSuperprojects = function (req, res) {
 
 batches.checkGithub = function (req, res) {
   var batch = new CheckGithub(keystone);
+  var options = {};
+  batch.start(options, function (stats) {
+    var result = {
+      message: 'OK',
+      statistics: stats
+    };
+    res.json(result);    
+  });
+
+};
+
+batches.simpleLoop = function (req, res) {
+  var batch = new ProjectBatch('Test', keystone);
   var options = {};
   batch.start(options, function (stats) {
     var result = {
