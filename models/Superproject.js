@@ -23,6 +23,8 @@ Superproject.add({
 	updatedAt: { type: Types.Date },
 	tags: { type: Types.Relationship, ref: 'Tag', many: true },
 	stars: { type: Types.Number },
+	snapshots: { type: Types.NumberArray },
+	deltas: { type: Types.NumberArray },
 	delta1: { type: Types.Number }
 
 });

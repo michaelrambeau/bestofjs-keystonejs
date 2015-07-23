@@ -23,22 +23,26 @@ class CreateSuperProjects extends ProjectBatch
         createdAt: project.createdAt
         delta1: if report.stars.length > 2 then report.stars[0] - report.stars[1] else 0
         snapshots: report.stars
+        deltas: @getDeltas report.stars
         name: project.name
         url: if project.url then project.url else ''
         repository: project.repository
         description: if project.description then project.description else ''
         tags: _.pluck project.tags, 'id'
       #console.log 'Searching', project.id  
+      #console.log @getDeltas report.stars
       @SuperProject.findOne()
         .where
           _id: project._id
         .exec (err, doc) =>  
           if err then throw error
           if doc
-            #console.log 'Updating...'
-            @SuperProject.update doc, data, (err, result) =>
+            #console.log 'Updating...', data
+            newDoc = _.extend doc, data
+            # I use doc.save rather than model.update because update does not save new fields added to the document!
+            newDoc.save (err, result) =>
               if err then throw err
-              #console.log 'Report updated.', project.toString()
+              console.log 'Report updated.', project.toString()
               @stats.updated++
               cb err, data
           else
@@ -51,8 +55,9 @@ class CreateSuperProjects extends ProjectBatch
   
   getReportData: (project, cb) ->
     d = moment().subtract(30, 'days').toDate()
-    steps = [1, 2, 7, 14]
-    dates = (moment().subtract(step, 'days').toDate() for step in steps)
+    d.setHours(0, 0, 0, 0);
+    steps = [1..14]
+    dates = (moment().hours(0).minutes(0).seconds(0).subtract(step, 'days').toDate() for step in steps)
     #console.log dates
     report =
       stars: 0
@@ -63,12 +68,21 @@ class CreateSuperProjects extends ProjectBatch
         createdAt: -1
       .exec (err, docs) =>
         dateIndex = 0
+        #console.log docs
         for doc, i in docs
           if i is 0 then report.stars = [doc.stars]
-          
-          if doc.createdAt < dates[dateIndex]
+          createdAt = doc.createdAt.setHours(0, 0, 0, 0)
+          if doc.createdAt <= dates[dateIndex]
             dateIndex++
+            #console.log doc.stars
             report.stars.push doc.stars
         cb(report)
+        
+  getDeltas: (starArray) ->
+    deltas = []
+    for stars, i in starArray
+      if i isnt starArray.length - 1
+        deltas.push stars - starArray[i + 1]
+    deltas    
 
 module.exports = CreateSuperProjects
