@@ -56,3 +56,10 @@ http requests must contain a `batch_key` header that matches the BATCH_KEY envir
 ### Automatic launch
 
 [Zappier](https://zapier.com/) is used to trigger the batch everyday at 06:00 AM, by sending a post request to the server.
+
+## Deploys
+
+### Which host
+
+* Heroku
+* QTCloudServices
