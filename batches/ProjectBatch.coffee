@@ -67,7 +67,7 @@ class ProjectBatch
         # Tasks run in parallel but we have to limit the number to avoid memory failures
         # A limit of 2 makes the whole process very slow (92s for 220 projects)
         # A limit of 10 seems to be good (11 seconds), 20 does not really make a difference.
-        var limit = 10
+        limit = 10
         console.log projects.length, 'projects to process...'  
         async.eachLimit projects, limit, @processProject.bind(this), () =>
           @stats.duration = (new Date() - t0) / 1000
