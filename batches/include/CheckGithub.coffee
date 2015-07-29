@@ -14,7 +14,7 @@ class CheckGithub extends ProjectBatch
   processProject: (project, cb) ->
     console.log 'Checking', project.toString()
     @getStars project, (err, data) =>
-      if data then console.log data;
+      #if data then console.log data;
       cb()
     
   getStars: (project, cb) ->

@@ -68,7 +68,7 @@ class ProjectBatch
         # A limit of 2 makes the whole process very slow (92s for 220 projects)
         # A limit of 10 seems to be good (11 seconds), 20 does not really make a difference.
         limit = 10
-        console.log projects.length, 'projects to process...'  
+        console.log projects.length, 'projects to process... Async limit=', limit  
         async.eachLimit projects, limit, @processProject.bind(this), () =>
           @stats.duration = (new Date() - t0) / 1000
           console.log '--- end! ---', @stats
