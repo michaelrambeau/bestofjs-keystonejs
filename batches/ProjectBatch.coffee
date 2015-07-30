@@ -48,7 +48,9 @@ class ProjectBatch
     defaultOptions = 
       debug: false
       project: {}
-    @options = _.assign defaultOptions, options
+      parallelLimit: 10
+    @options = _.extend defaultOptions, options
+    console.log 'Batch options', @options
     @initKeystone () =>
       cb @stats
     
@@ -67,7 +69,7 @@ class ProjectBatch
         # Tasks run in parallel but we have to limit the number to avoid memory failures
         # A limit of 2 makes the whole process very slow (92s for 220 projects)
         # A limit of 10 seems to be good (11 seconds), 20 does not really make a difference.
-        limit = 10
+        limit = @options.parallelLimit;
         console.log projects.length, 'projects to process... Async limit=', limit  
         async.eachLimit projects, limit, @processProject.bind(this), () =>
           @stats.duration = (new Date() - t0) / 1000
