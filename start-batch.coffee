@@ -32,14 +32,17 @@ keystone.import( opts.models )
 
 ProjectBatch = require "./batches/ProjectBatch"
 
-#Batch #1: create all snapshots
+# Batch #1: create all snapshots
 CreateSnapshots = require "./batches/include/CreateSnapshots"
 
-#Batch #2: create superprojects
+# Batch #2: create superprojects
 CreateSuperProjects = require "./batches/include/CreateSuperProjects"
 
-#Batch #3: Check Github repositories
+# Batch #3: Check Github repositories
 CheckGithub = require "./batches/include/CheckGithub"
+
+# Batch #4: Create project records in Parse backend
+UpdateParse = require "./batches/include/UpdateParse"
 
 minimist = require 'minimist'
 argv = minimist(process.argv.slice(2))
@@ -54,6 +57,8 @@ if argv.project
   
 console.log 'Command line argument', key, options
 
+batch = null
+
 switch key
   when 'test'
     batch = new ProjectBatch('Test', keystone)  
@@ -63,9 +68,11 @@ switch key
     batch = new CreateSuperProjects(keystone)
   when 'checkgithub'
     batch = new CheckGithub(keystone) 
+  when 'parse'
+    batch = new UpdateParse(keystone) 
   else
     throw new Error 'Unknown key!'
 
 #Launch the batch!
-batch.start options, (stats) ->
+if batch then batch.start options, (stats) ->
   console.log '/// Batch terminated normally. /// ', stats

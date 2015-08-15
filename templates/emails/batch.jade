@@ -1,0 +1,7 @@
+//Mail sent to notufy batch result
+//local object: `stats` JSON object
+
+- var keys = Object.keys(stats)
+each key in keys
+  if stats[key] !== 0
+    p= key + '=' + stats[key]

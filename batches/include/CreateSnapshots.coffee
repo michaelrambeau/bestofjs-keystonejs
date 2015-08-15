@@ -83,6 +83,9 @@ class CreateSnapshots extends ProjectBatch
       else  
         cb null,
           stars: json.stargazers_count
-          last_pushed: json.pushed_at      
+          last_pushed: json.pushed_at
+          
+  postProcess: () ->
+    @sendEmail()          
     
 module.exports = CreateSnapshots
