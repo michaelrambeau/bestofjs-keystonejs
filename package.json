@@ -15,17 +15,20 @@
     "underscore": "^1.8.0"
   },
   "devDependencies": {
+    "faucet": "0.0.1",
     "gulp": "^3.7.0",
     "gulp-jshint": "^1.9.0",
+    "gulp-watch": "^0.6.5",
     "jshint-stylish": "^0.1.3",
-    "gulp-watch": "^0.6.5"
+    "tape": "^4.2.0"
   },
   "engines": {
     "node": ">=0.10.22",
     "npm": ">=1.3.14"
   },
   "scripts": {
-    "start": "node keystone.js"
+    "start": "node keystone.js",
+    "test": "coffee tests | ./node_modules/faucet/bin/cmd.js"
   },
   "main": "keystone.js"
 }

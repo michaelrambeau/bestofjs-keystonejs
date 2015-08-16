@@ -23,6 +23,7 @@ console.log( "options:", opts )
 console.log( "setting cwd:", opts.cwd )
 
 keystone = reqmod( "keystone", process.cwd() )
+console.log 'Keystone.init()...'
 keystone.init( opts.keystone )
 mongoUri = opts.mongoUri || process.env.MONGO_URI;
 console.log( "Connecting to mongoose URI:", mongoUri )
