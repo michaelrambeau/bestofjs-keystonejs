@@ -1,5 +1,7 @@
 #bestof.js.org backend application
 
+[![Build Status](https://travis-ci.org/michaelrambeau/bestofjs-keystonejs.svg?branch=master)](https://travis-ci.org/michaelrambeau/bestofjs-keystonejs)
+
 bestof.js.org backend application, built with [KeystoneJS](http://keystonejs.com/)
 
 ## What I did
