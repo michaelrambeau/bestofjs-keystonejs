@@ -1,41 +1,49 @@
 # Test using Tape librairy
 # see https://medium.com/javascript-scene/why-i-use-tape-instead-of-mocha-so-should-you-6aa105d8eaf4
+#
+# First test (2015/08/16): check API end point `/project/all`
 
 tape = require 'tape'
 {test} = tape
 
+require('dotenv').load()
+keystone = require( "keystone")
 
 
-test 'A passing test', (assert) ->
-  assert.pass('This test will pass.')
-  assert.end()
+test 'A passing test', (t) ->
+  t.pass('This test will pass.')
+  t.end()
 
-test 'Assertions with tape.', (assert) ->
+test 'Assertions with tape.', (t) ->
   expected = 'something to test'
   actual = 'something to test'
-  assert.equal actual, expected, 'Given two mismatched values, .equal() should produce a nice bug report'
-  assert.end()
+  t.equal actual, expected, 'Given two mismatched values, .equal() should produce a nice bug report'
+  t.end()
   
-test 'API', (assert) ->
-  assert.plan 2
-  assert.comment 'Starting keystone...'
+
+if true then test 'API', (t) ->
+  t.comment 'Starting keystone...'
   startKeystone()
-  assert.comment 'Started!'
+  t.comment 'Started!'
   api = require '../routes/api/projects'
   data = {}
-  #  projects: [1]
+
   res = 
     json: (json) ->
-      assert.comment 'Get API response'
+      t.comment 'Get API response: ' + json.projects.length
       data = json 
-      assert.equal (data.projects and data.projects.length > 0), true, 'Should return projects'
-      assert.equal (data.tags and data.tags.length > 0), true, 'Should return tags'
-      assert.end()
+      t.assert data.projects and data.projects.length, 'Should return projects'
+      t.assert data.tags and data.tags.length, 'Should return tags'
+      t.end()
+      
+      # Don't forget to close the db connection, otherwise the test keeps hanging
+      # despite the t.end() instruction, which makes the CI fails (timeout). 
+      keystone.mongoose.disconnect()      
   api.list null, res
   
 startKeystone = () ->
   console.log 'start Keystone'
-  require('dotenv').load()
+  
   path = require( "path" )
   opts =
     models: "./models"
@@ -43,7 +51,7 @@ startKeystone = () ->
     keystone:
       headless: true
   opts.keystone[ "module root" ] = opts.cwd      
-  keystone = require( "keystone")
+  
   keystone.init( opts.keystone )
   mongoUri = opts.mongoUri || process.env.MONGO_URI;
   console.log( "Connecting to mongoose URI:", mongoUri )
