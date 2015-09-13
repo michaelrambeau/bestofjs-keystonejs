@@ -74,37 +74,30 @@ api.single = function (req, res) {
       if (err) console.log(err);
       console.log(readme);
       var root = project.repository;
-      //Replace image link (see faceboox Flux readme.md)
-      readme = readme.replace(/src=\"\.\//,'src="'+ root +'/raw/master/');
+      
+      //Replace relative URL by absolute URL
+      var getImagePath = function (url) {
+        var path = url;
+        
+        //If the URL is absolute (start with http), we do nothing...
+        if (path.indexOf('http') === 0) return path;
+        
+        //Special case: in Faceboox Flux readme, relative URLs start with './'
+        //so we just remove './' from the UL
+        if (path.indexOf('./') === 0) path = path.replace(/.\//, '');
+        
+        //...otherwise we create an absolute URL to the "raw image
+        // example: images in "You-Dont-Know-JS" repo.
+        return root + '/raw/master/' + path;
+      };
+      readme = readme.replace(/src=\"(.+?)\"/gi, function(match, p1) { 
+        return 'src="'+ getImagePath(p1) + '"'}
+      );
+      
       data.readme = err ? 'Unable to access README.' : readme;
       cb();      
     });
   }; 
-  var getReadMeOLD = function (project, cb) {
-    var repoName = project.repository.substring(('https://github.com/').length);//"facebook/fixed-data-table"
-    var url = 'https://api.github.com/repos/' + repoName + '/readme';
-    url = url + "?" + process.env.GITHUB;
-    var options = {
-      url: url,
-      headers: {
-        'User-Agent': process.env.GITHUB_USERNAME      
-      }
-    };
-    console.log('Get', options);
-    request.get(options, function (error, response, body) {
-      if (error) throw error;
-      console.log('Github request', response.statusCode);
-      if ( response.statusCode == 200) {
-        var json = JSON.parse(body);
-        var buffer = new Buffer(json.content, 'base64');
-        data.readme = buffer.toString('utf8');
-      }
-      else {
-        console.log(body);
-      }
-      cb();
-    });
-  };
   async.parallel([getProject, getSnapshots], function (cb) {
     return res.json(data);
   });	

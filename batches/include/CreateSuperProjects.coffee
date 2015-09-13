@@ -29,8 +29,7 @@ class CreateSuperProjects extends ProjectBatch
         repository: project.repository
         description: if project.description then project.description else ''
         tags: _.pluck project.tags, 'id'
-      #console.log 'Searching', project.id  
-      #console.log @getDeltas report.stars
+      console.log data
       @SuperProject.findOne()
         .where
           _id: project._id

@@ -8,7 +8,7 @@ github =
     options =
       url: url
       headers:
-        'User-Agent': 'michaelrambeau'
+        'User-Agent': process.env.GITHUB
         'Accept': 'application/vnd.github.quicksilver-preview+json'
     #console.log 'Check Github', url
     request.get options, (error, response, body) ->
