@@ -29,8 +29,8 @@ Project.add({
 	  vibrant: { type: Types.Color },
 	  muted: { type: Types.Color },
 	  darkVibrant: { type: Types.Color }
-	}
-	//snapshots: { type: Types.Relationship, ref: 'Snapshot', many: true }
+	},
+	snapshots: { type: Types.Relationship, ref: 'Snapshot', many: true }
 });
 
 Project.schema.methods.toString = function () {

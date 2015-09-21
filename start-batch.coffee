@@ -37,7 +37,7 @@ ProjectBatch = require "./batches/ProjectBatch"
 CreateSnapshots = require "./batches/include/CreateSnapshots"
 
 # Batch #2: create superprojects
-CreateSuperProjects = require "./batches/include/CreateSuperProjects"
+CreateSuperProjects = require "./batches/superprojects/CreateSuperProjects"
 
 # Batch #3: Check Github repositories
 CheckGithub = require "./batches/include/CheckGithub"

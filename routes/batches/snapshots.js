@@ -5,7 +5,7 @@ var _ = require('underscore');
 //Classses
 var ProjectBatch = require("../../batches/ProjectBatch");
 var CreateSnapshots = require("../../batches/include/CreateSnapshots");
-var CreateSuperProjects = require("../../batches/include/CreateSuperProjects");
+var CreateSuperProjects = require("../../batches/superprojects/CreateSuperProjects");
 var CheckGithub = require("../../batches/include/CheckGithub");
 
 

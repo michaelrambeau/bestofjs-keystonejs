@@ -7,7 +7,7 @@
     "coffee-script": "^1.9.2",
     "dotenv": "^1.1.0",
     "keen-js": "^3.2.4",
-    "keystone": "^0.3.9",
+    "keystone": "^0.3.14",
     "minimist": "^1.1.1",
     "moment": "^2.10.3",
     "request": "^2.57.0",
