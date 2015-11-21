@@ -21,9 +21,27 @@ Project.add({
 	description: { type: Types.Textarea, required: false },
 	url: { type: Types.Url, required: false },
 	repository: { type: Types.Url, required: true, initial: true },
+	
 	createdAt: { type: Types.Date, default: Date.now },
 	updatedAt: { type: Types.Date },
+	
+	// used to temporally disable a project from the list, screenshots will still be taken
+	disabled: { type: Types.Boolean, default: false }, 
+	
+	// used to definitevely remove a project: no screenshot will be taken.
+	deprecated: { type: Types.Boolean, default: false }, 
+	
 	tags: { type: Types.Relationship, ref: 'Tag', many: true },
+	
+	github: {
+	  name:  { type: Types.Text },
+	  full_name:  { type: Types.Text },
+	  description:  { type: Types.Text },
+	  homepage:  { type: Types.Text },
+	  stargazers_count: { type: Types.Number },
+    pushed_at: {type: Types.Date}
+	},
+	
 	logo: { type: Types.CloudinaryImage, folder: 'project-logos', autoCleanup : true },
 	colors: {
 	  vibrant: { type: Types.Color },
